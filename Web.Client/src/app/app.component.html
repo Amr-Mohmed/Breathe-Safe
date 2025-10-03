@@ -96,6 +96,64 @@
         </div>
       </div>
     </div>
+
+    <!-- Historical Trends Section -->
+    <div class="trends-section" *ngIf="currentLocation">
+      <div class="trends-card">
+        <div class="trends-header">
+          <h2>Historical Air Quality Trends</h2>
+          <div class="time-period-selector">
+            <button 
+              *ngFor="let period of timePeriods" 
+              class="period-btn"
+              [class.active]="selectedPeriod === period.value"
+              (click)="selectTimePeriod(period.value)">
+              {{ period.label }}
+            </button>
+          </div>
+        </div>
+
+        <!-- Chart Container -->
+        <div class="chart-container">
+          <canvas 
+            baseChart
+            [data]="chartData"
+            [options]="chartOptions"
+            [type]="chartType">
+          </canvas>
+        </div>
+
+        <!-- AQI Info -->
+        <div class="aqi-info">
+          <p class="chart-description">Historical Air Quality Index (AQI) trends for {{ currentLocation }}</p>
+        </div>
+
+        <!-- Trend Insights -->
+        <div class="trend-insights">
+          <div class="insight-grid">
+            <div class="insight-card">
+              <div class="insight-label">Trend</div>
+              <div class="insight-value" [ngClass]="trendDirection">
+                {{ trendText }}
+                <span class="trend-icon">{{ trendIcon }}</span>
+              </div>
+            </div>
+            <div class="insight-card">
+              <div class="insight-label">Average AQI</div>
+              <div class="insight-value">{{ averageAQI }}</div>
+            </div>
+            <div class="insight-card">
+              <div class="insight-label">Best Day</div>
+              <div class="insight-value">{{ bestDay }}</div>
+            </div>
+            <div class="insight-card">
+              <div class="insight-label">Worst Day</div>
+              <div class="insight-value">{{ worstDay }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -491,6 +549,186 @@
     line-height: 1.6;
   }
 
+  /* Historical Trends Section */
+  .trends-section {
+    margin-top: 2rem;
+  }
+
+  .trends-card {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 2rem;
+    box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+  }
+
+  .trends-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .trends-header h2 {
+    margin: 0;
+    color: #1e293b;
+    font-size: 1.8rem;
+  }
+
+  .time-period-selector {
+    display: flex;
+    gap: 0.5rem;
+    background: #f8fafc;
+    padding: 0.25rem;
+    border-radius: 12px;
+  }
+
+  .period-btn {
+    padding: 0.5rem 1rem;
+    border: none;
+    background: transparent;
+    color: #64748b;
+    font-weight: 500;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.875rem;
+  }
+
+  .period-btn:hover {
+    color: #4F46E5;
+  }
+
+  .period-btn.active {
+    background: #4F46E5;
+    color: white;
+    box-shadow: 0 2px 8px rgba(79, 70, 229, 0.3);
+  }
+
+  /* Chart Container */
+  .chart-container {
+    height: 400px;
+    margin: 2rem 0;
+    position: relative;
+  }
+
+  /* AQI Info */
+  .aqi-info {
+    margin: 1rem 0 2rem 0;
+    text-align: center;
+  }
+
+  .chart-description {
+    color: #64748b;
+    font-size: 1rem;
+    margin: 0;
+    font-style: italic;
+  }
+
+  /* Pollutant Toggles */
+  .pollutant-toggles {
+    margin: 2rem 0;
+  }
+
+  .pollutant-toggles h3 {
+    margin: 0 0 1rem 0;
+    color: #1e293b;
+    font-size: 1.1rem;
+  }
+
+  .toggle-buttons {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .pollutant-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    border: 2px solid #e2e8f0;
+    background: white;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #64748b;
+  }
+
+  .pollutant-btn:hover {
+    border-color: #cbd5e1;
+    transform: translateY(-1px);
+  }
+
+  .pollutant-btn.active {
+    background: #f8fafc;
+    border-color: currentColor;
+    color: #1e293b;
+  }
+
+  .color-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    display: block;
+  }
+
+  /* Trend Insights */
+  .trend-insights {
+    background: #f8fafc;
+    border-radius: 12px;
+    padding: 1.5rem;
+    border-left: 4px solid #4F46E5;
+  }
+
+  .insight-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
+  }
+
+  .insight-card {
+    text-align: center;
+  }
+
+  .insight-label {
+    font-size: 0.875rem;
+    color: #64748b;
+    margin-bottom: 0.25rem;
+    font-weight: 500;
+  }
+
+  .insight-value {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #1e293b;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.25rem;
+  }
+
+  .insight-value.improving {
+    color: #059669;
+  }
+
+  .insight-value.worsening {
+    color: #dc2626;
+  }
+
+  .insight-value.stable {
+    color: #d97706;
+  }
+
+  .trend-icon {
+    font-size: 1rem;
+  }
+
   /* Responsive */
   @media (max-width: 768px) {
     .nav-container {
@@ -520,6 +758,32 @@
     
     .nav-menu {
       gap: 1rem;
+    }
+
+    .trends-header {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .trends-header h2 {
+      text-align: center;
+    }
+
+    .chart-container {
+      height: 300px;
+    }
+
+    .time-period-selector {
+      justify-content: center;
+    }
+
+    .toggle-buttons {
+      justify-content: center;
+    }
+
+    .insight-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.75rem;
     }
   }
 </style>

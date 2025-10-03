@@ -1,10 +1,15 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { BaseChartDirective } from 'ng2-charts';
+import { Chart, ChartConfiguration, ChartType, registerables } from 'chart.js';
+
+// Register Chart.js components
+Chart.register(...registerables);
 
 @Component({
   selector: 'app-root',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, BaseChartDirective],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
@@ -19,6 +24,98 @@ export class AppComponent {
     label: '', 
     recommendation: '' 
   };
+
+  // Chart configuration
+  chartType: ChartType = 'line';
+  selectedPeriod = '7d';
+  
+  // Chart data
+  chartData: ChartConfiguration['data'] = {
+    labels: [],
+    datasets: []
+  };
+
+  chartOptions: ChartConfiguration['options'] = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        display: true,
+        position: 'top',
+        labels: {
+          usePointStyle: true,
+          font: {
+            size: 14
+          },
+          color: '#64748b'
+        }
+      },
+      tooltip: {
+        mode: 'index',
+        intersect: false,
+        backgroundColor: 'rgba(255, 255, 255, 0.9)',
+        titleColor: '#1e293b',
+        bodyColor: '#64748b',
+        borderColor: '#e2e8f0',
+        borderWidth: 1,
+        cornerRadius: 8
+      }
+    },
+    scales: {
+      x: {
+        grid: {
+          color: '#f1f5f9'
+        },
+        ticks: {
+          color: '#64748b'
+        }
+      },
+      y: {
+        beginAtZero: true,
+        max: 200,
+        grid: {
+          color: '#f1f5f9'
+        },
+        ticks: {
+          color: '#64748b'
+        },
+        title: {
+          display: true,
+          text: 'AQI Value',
+          color: '#64748b'
+        }
+      }
+    },
+    interaction: {
+      mode: 'nearest',
+      axis: 'x',
+      intersect: false
+    }
+  };
+
+  // Time period options
+  timePeriods = [
+    { label: '7D', value: '7d' },
+    { label: '30D', value: '30d' },
+    { label: '90D', value: '90d' },
+    { label: '1Y', value: '1y' }
+  ];
+
+  // Pollutants configuration
+  pollutants = [
+    { key: 'aqi', name: 'AQI', color: '#4F46E5', visible: true },
+    { key: 'pm25', name: 'PM2.5', color: '#EF4444', visible: false },
+    { key: 'no2', name: 'NO₂', color: '#F59E0B', visible: false },
+    { key: 'o3', name: 'O₃', color: '#10B981', visible: false }
+  ];
+
+  // Trend insights
+  trendDirection = 'improving';
+  trendText = 'Improving';
+  trendIcon = '↗️';
+  averageAQI = 0;
+  bestDay = '';
+  worstDay = '';
 
   // Mock AQI data for different cities
   private cityAQIData: { [key: string]: number } = {
@@ -133,6 +230,146 @@ export class AppComponent {
         label: 'Hazardous',
         recommendation: 'Emergency conditions: everyone should avoid outdoor activities and stay indoors with air filtration.'
       };
+    }
+    
+    // Update historical chart when AQI is updated
+    this.updateHistoricalChart();
+  }
+
+  selectTimePeriod(period: string): void {
+    this.selectedPeriod = period;
+    this.updateHistoricalChart();
+  }
+
+  togglePollutant(pollutantKey: string): void {
+    const pollutant = this.pollutants.find(p => p.key === pollutantKey);
+    if (pollutant) {
+      pollutant.visible = !pollutant.visible;
+      this.updateHistoricalChart();
+    }
+  }
+
+  private updateHistoricalChart(): void {
+    const datasets: any[] = [];
+    const labels = this.generateTimeLabels(this.selectedPeriod);
+    
+    // Generate data for each visible pollutant
+    this.pollutants.forEach(pollutant => {
+      if (pollutant.visible) {
+        const data = this.generateHistoricalData(pollutant.key, labels.length);
+        datasets.push({
+          label: pollutant.name,
+          data: data,
+          borderColor: pollutant.color,
+          backgroundColor: pollutant.color + '20', // 20% opacity
+          borderWidth: 3,
+          fill: false,
+          tension: 0.4,
+          pointBackgroundColor: pollutant.color,
+          pointBorderColor: '#ffffff',
+          pointBorderWidth: 2,
+          pointRadius: 4,
+          pointHoverRadius: 6
+        });
+      }
+    });
+
+    this.chartData = {
+      labels: labels,
+      datasets: datasets
+    };
+
+    // Update trend insights
+    this.updateTrendInsights(datasets[0]?.data || []);
+  }
+
+  private generateTimeLabels(period: string): string[] {
+    const labels: string[] = [];
+    const now = new Date();
+    let days = 7;
+
+    switch (period) {
+      case '7d': days = 7; break;
+      case '30d': days = 30; break;
+      case '90d': days = 90; break;
+      case '1y': days = 365; break;
+    }
+
+    for (let i = days - 1; i >= 0; i--) {
+      const date = new Date(now);
+      date.setDate(date.getDate() - i);
+      
+      if (period === '1y') {
+        labels.push(date.toLocaleDateString('en-US', { month: 'short' }));
+      } else if (period === '90d') {
+        labels.push(date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }));
+      } else {
+        labels.push(date.toLocaleDateString('en-US', { weekday: 'short' }));
+      }
+    }
+
+    return labels;
+  }
+
+  private generateHistoricalData(pollutantType: string, length: number): number[] {
+    const data: number[] = [];
+    let baseValue = this.aqiValue || 75;
+    
+    // Adjust base value for different pollutants
+    switch (pollutantType) {
+      case 'pm25': baseValue *= 0.8; break;
+      case 'no2': baseValue *= 0.6; break;
+      case 'o3': baseValue *= 0.9; break;
+    }
+
+    for (let i = 0; i < length; i++) {
+      // Create realistic variations with seasonal and weekly patterns
+      const seasonalFactor = Math.sin((i / length) * Math.PI * 2) * 0.2;
+      const weeklyFactor = Math.sin((i / 7) * Math.PI * 2) * 0.1;
+      const randomFactor = (Math.random() - 0.5) * 0.3;
+      
+      const value = baseValue * (1 + seasonalFactor + weeklyFactor + randomFactor);
+      data.push(Math.max(10, Math.min(200, Math.round(value))));
+    }
+
+    return data;
+  }
+
+  private updateTrendInsights(data: number[]): void {
+    if (data.length < 2) return;
+
+    // Calculate average
+    this.averageAQI = Math.round(data.reduce((a, b) => a + b, 0) / data.length);
+
+    // Find best and worst days
+    const minValue = Math.min(...data);
+    const maxValue = Math.max(...data);
+    const minIndex = data.indexOf(minValue);
+    const maxIndex = data.indexOf(maxValue);
+
+    const labels = this.generateTimeLabels(this.selectedPeriod);
+    this.bestDay = `${labels[minIndex]} (${minValue})`;
+    this.worstDay = `${labels[maxIndex]} (${maxValue})`;
+
+    // Calculate trend (comparing first half vs second half)
+    const firstHalf = data.slice(0, Math.floor(data.length / 2));
+    const secondHalf = data.slice(Math.floor(data.length / 2));
+    
+    const firstAvg = firstHalf.reduce((a, b) => a + b, 0) / firstHalf.length;
+    const secondAvg = secondHalf.reduce((a, b) => a + b, 0) / secondHalf.length;
+
+    if (secondAvg < firstAvg - 5) {
+      this.trendDirection = 'improving';
+      this.trendText = 'Improving';
+      this.trendIcon = '📈';
+    } else if (secondAvg > firstAvg + 5) {
+      this.trendDirection = 'worsening';
+      this.trendText = 'Worsening';
+      this.trendIcon = '📉';
+    } else {
+      this.trendDirection = 'stable';
+      this.trendText = 'Stable';
+      this.trendIcon = '➡️';
     }
   }
 }
