@@ -53,14 +53,16 @@ public class AirQualityPredictionSerivce : IAirQualityPredictionService
     {
         var response = await _httpClient.PostAsJsonAsync("FastApi.Url", request);
         var result = await response.Content.ReadFromJsonAsync<PredictionResponse>();
-        return new AirQualityPrediction
+        var air = new AirQualityPrediction
         {
-            PredictionDate = DateTime.UtcNow, 
-            AQI = (decimal)result.Prediction,   
+            PredictionDate = DateTime.UtcNow,
+            AQI = (decimal)result.Prediction,
             SourceModel = "BreathSafe-Model",
             AdvisoryMessage = $"Predicted AQI is {result.Prediction}, Be safe."
         };
 
+        air =   await   this.AddAirQualityData(air);
+        return air;
     }
 
     async Task GetAQICategory(decimal aqi)
