@@ -5,13 +5,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Repositories.Generic;
 
-public class BaseRepository<TEntity> : IRepository<TEntity>
+public class Repository<TEntity> : IRepository<TEntity>
     where TEntity : class
 {
     
     protected readonly ApplicationDbContext _db;
 
-    public BaseRepository(ApplicationDbContext context)
+    public Repository(ApplicationDbContext context)
     {
         _db = context;
     }
