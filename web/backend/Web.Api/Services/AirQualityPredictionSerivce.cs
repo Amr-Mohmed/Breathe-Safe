@@ -25,23 +25,30 @@ public class AirQualityPredictionSerivce : IAirQualityPredictionService
         return air;
     }
 
-    public Task<List<AirQualityPrediction>> GetLastMonthAirQualityFor(string location)
+    public async Task<List<AirQualityPrediction>> GetLastMonthAirQualityFor(string location)
     {
-        throw new NotImplementedException();
+        var lastMonth = DateTime.Today.AddMonths(-1);
+        var lst = await _repository.RetrieveAllAsync(aqp => aqp.PredictionDate == lastMonth);
+        return lst.ToList();
     }
 
-    public Task<List<AirQualityPrediction>> GetLastWeekAirQualityFor(string location)
+    public async Task<List<AirQualityPrediction>> GetLastWeekAirQualityFor(string location)
     {
-        throw new NotImplementedException();
+        var lastWeek = DateTime.Today.AddDays(-7);
+        var lst = await _repository.RetrieveAllAsync(aqp => aqp.PredictionDate == lastWeek);
+        return lst.ToList();
     }
 
-    public Task<List<AirQualityPrediction>> GetTodayAirQualityFor(string location)
+    public async Task<List<AirQualityPrediction>> GetTodayAirQualityFor(string location)
     {
-        throw new NotImplementedException();
+
+        var today = DateTime.Today;
+        var lst = await _repository.RetrieveAllAsync(aqp => aqp.PredictionDate == today);
+        return lst.ToList();
     }
 
-        async Task GetAQICategory(decimal aqi)
-        {
+    async Task GetAQICategory(decimal aqi)
+    {
         switch (aqi)
         {
             case decimal n when (n >= 101 && n <= 150):
@@ -52,7 +59,7 @@ public class AirQualityPredictionSerivce : IAirQualityPredictionService
             case decimal n when (n >= 151 && n <= 200):
                 await _subscriberService.Notify(SubscriberType.HealthSensitiveGroup);
                 break;
-            case decimal n when (n >= 201 && n <= 300): 
+            case decimal n when (n >= 201 && n <= 300):
                 await _subscriberService.Notify(SubscriberType.HealthSensitiveGroup);
                 await _subscriberService.Notify(SubscriberType.DisasterReadinessOrganization);
 
@@ -72,7 +79,7 @@ public class AirQualityPredictionSerivce : IAirQualityPredictionService
             default:
 
                 return;
-                    // return "Invalid AQI";
+                // return "Invalid AQI";
         }
-        }
+    }
 }
