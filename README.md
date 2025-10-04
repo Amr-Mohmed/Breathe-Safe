@@ -28,21 +28,25 @@ All collected data was converted to **Excel format** for easier handling and pro
 
 ## Project Flow
 
-```mermaid
 flowchart TD
-    A[Data Collection] --> B[Data Conversion & Processing]
-    B --> C[Merged Dataset (Excel)]
-    C --> D[Time Series LSTM Model]
+    subgraph DataSources["Data Collection"]
+        A1[TEMPO Satellite<br/>Air Pollutants]
+        A2[OpenAQ API<br/>Ground Sensors]
+        A3[Weather API<br/>Meteorological Data]
+    end
+    
+    A1 --> B[Data Conversion & Processing]
+    A2 --> B
+    A3 --> B
+    
+    B --> C[Merged Dataset<br/>Excel Format]
+    C --> D[Time Series LSTM Model<br/>Training]
     D --> E[FastAPI Deployment]
     E --> F[API Predictions]
-
-    subgraph DataSources
-        A1[TEMPO (Satellite)]
-        A2[OpenAQ (Ground Sensors)]
-        A3[Weather API]
-        A --> A1
-        A --> A2
-        A --> A3
-    end
-
-```
+    
+    style DataSources fill:#e1f5ff
+    style B fill:#fff4e1
+    style C fill:#e8f5e9
+    style D fill:#f3e5f5
+    style E fill:#fce4ec
+    style F fill:#fff9c4
