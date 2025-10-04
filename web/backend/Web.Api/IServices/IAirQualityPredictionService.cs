@@ -8,6 +8,6 @@ public interface IAirQualityPredictionService
     Task<List<AirQualityPrediction>> GetLastWeekAirQualityFor(string location);
     Task<List<AirQualityPrediction>> GetLastMonthAirQualityFor(string location);
 
-    Task<AirQualityPrediction> AddAirQualityData(string location);
+    Task<AirQualityPrediction> AddAirQualityData(AirQualityPrediction airQualityPrediction);
 
 }
