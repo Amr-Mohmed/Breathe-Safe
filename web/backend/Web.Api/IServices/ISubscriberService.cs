@@ -1,4 +1,5 @@
 using web.Models;
+using web.Models.enums;
 
 namespace IService;
 
@@ -6,5 +7,5 @@ namespace IService;
 public interface ISubscriberService
 {
     Task<Subscriber> AddSubscriber(Subscriber subscriber);
-    Task Notify();
+    Task Notify(SubscriberType subscriberType);
 }
