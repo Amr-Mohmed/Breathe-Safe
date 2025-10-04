@@ -1,0 +1,13 @@
+.idea/
+.vscode/
+.vs/
+
+*.user  
+*.bkp
+*.dtmp
+
+**/bin/
+**/obj/
+**/Resources/
+Resources/
+ 

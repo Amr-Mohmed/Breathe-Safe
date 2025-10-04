@@ -1,0 +1,111 @@
+<!-- Data Page Content -->
+<div class="data-page">
+  <div class="container">
+    <!-- Header Section -->
+    <div class="header-section">
+      <h1 class="page-title">Data Sources</h1>
+      <p class="page-subtitle">Comprehensive air quality and weather monitoring data powering Breathe Safe</p>
+    </div>
+
+    <!-- Data Sources Grid -->
+    <div class="data-sources-grid">
+      
+      <!-- TEMPO Data Card -->
+      <div class="data-card">
+        <div class="data-image">
+          <img src="../assets/images/main_image_lg.png" [alt]="tempoData.imageAlt" loading="lazy">
+        </div>
+        <div class="data-content">
+          <h2 class="data-title">{{ tempoData.title }}</h2>
+          <p class="data-description">{{ tempoData.description }}</p>
+          
+          <div class="data-features">
+            <h3>Key Features:</h3>
+            <ul>
+              <li *ngFor="let feature of tempoData.features">{{ feature }}</li>
+            </ul>
+          </div>
+
+          <div class="data-reference">
+            <h4>Reference:</h4>
+            <p class="reference-text">{{ tempoData.reference }}</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Ground Data Card -->
+      <div class="data-card">
+        <div class="data-image">
+          <img src="../assets/images/g.png" [alt]="groundData.imageAlt" loading="lazy">
+        </div>
+        <div class="data-content">
+          <h2 class="data-title">{{ groundData.title }}</h2>
+          <p class="data-description">{{ groundData.description }}</p>
+          
+          <div class="data-features">
+            <h3>Key Features:</h3>
+            <ul>
+              <li *ngFor="let feature of groundData.features">{{ feature }}</li>
+            </ul>
+          </div>
+
+          <div class="data-reference">
+            <h4>Reference:</h4>
+            <p class="reference-text">{{ groundData.reference }}</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Weather Data Card -->
+      <div class="data-card">
+        <div class="data-image">
+          <img src="../assets/images/w.png" [alt]="weatherData.imageAlt" loading="lazy">
+        </div>
+        <div class="data-content">
+          <h2 class="data-title">{{ weatherData.title }}</h2>
+          <p class="data-description">{{ weatherData.description }}</p>
+          
+          <div class="data-features">
+            <h3>Key Features:</h3>
+            <ul>
+              <li *ngFor="let feature of weatherData.features">{{ feature }}</li>
+            </ul>
+          </div>
+
+          <div class="data-reference">
+            <h4>Reference:</h4>
+            <p class="reference-text">{{ weatherData.reference }}</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Additional Info Section -->
+    <div class="info-section">
+      <div class="info-card">
+        <h2>Data Integration</h2>
+        <p>Breathe Safe combines these three critical data sources to provide you with the most accurate and comprehensive air quality information available. Our platform integrates satellite observations, ground-based measurements, and meteorological conditions to deliver real-time insights into air quality conditions that affect your daily life.</p>
+        
+        <div class="integration-benefits">
+          <div class="benefit">
+            <div class="benefit-icon">🛰️</div>
+            <h4>Satellite Coverage</h4>
+            <p>TEMPO provides wide-area monitoring from space with unprecedented temporal resolution</p>
+          </div>
+          <div class="benefit">
+            <div class="benefit-icon">📍</div>
+            <h4>Ground Measurements</h4>
+            <p>Pandora, TolNet, and OpenAQ networks provide precise, localized validation data</p>
+          </div>
+          <div class="benefit">
+            <div class="benefit-icon">🌤️</div>
+            <h4>Weather Context</h4>
+            <p>Meteorological data helps understand pollution patterns and forecasting</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

@@ -1,0 +1,169 @@
+<!-- Main Content -->
+<div class="main-content">
+  <div class="container">
+    <!-- Header Section -->
+    <div class="header-section">
+  <h1 class="main-title">AQI Predection</h1>
+      <p class="subtitle">Get real-time air quality data powered by NASA TEMPO</p>
+      
+      <!-- Stakeholder Selector -->
+      <div class="stakeholder-section">
+        <h3>Select Your View:</h3>
+        <select class="stakeholder-dropdown" [(ngModel)]="selectedStakeholder" (change)="onStakeholderChange()">
+          <option *ngFor="let stakeholder of stakeholders" [value]="stakeholder.value">
+            {{ stakeholder.icon }} {{ stakeholder.label }}
+          </option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Location Selection -->
+    <div class="location-section">
+      <div class="location-card">
+        <h2>Choose Your Location</h2>
+        <div class="location-options">
+          <div class="location-choice">
+            <select class="city-dropdown" [(ngModel)]="selectedCity" (change)="onCityChange()">
+              <option value="">Select a city</option>
+              <option value="new-york">New York, NY</option>
+              <option value="los-angeles">Los Angeles, CA</option>
+              <option value="chicago">Chicago, IL</option>
+              <option value="houston">Houston, TX</option>
+              <option value="phoenix">Phoenix, AZ</option>
+              <option value="philadelphia">Philadelphia, PA</option>
+              <option value="san-antonio">San Antonio, TX</option>
+              <option value="san-diego">San Diego, CA</option>
+            </select>
+          </div>
+          <div class="or-divider">
+            <span>OR</span>
+          </div>
+          <div class="location-choice">
+            <button class="location-btn" (click)="getCurrentLocation()">
+              <svg class="location-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2C8.13 2 5 5.13 5 9C5 14.25 12 22 12 22S19 14.25 19 9C19 5.13 15.87 2 12 2ZM12 11.5C10.62 11.5 9.5 10.38 9.5 9S10.62 6.5 12 6.5S14.5 7.62 14.5 9S13.38 11.5 12 11.5Z" fill="currentColor"/>
+              </svg>
+              Use Current Location
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- AQI Display -->
+    <div class="aqi-section" *ngIf="currentLocation">
+      <div class="aqi-card">
+        <h2>Air Quality Index</h2>
+        <div class="aqi-location">{{ currentLocation }}</div>
+        
+        <!-- AQI Value Display -->
+        <div class="aqi-value-container">
+          <div class="aqi-number">{{ aqiValue }}</div>
+          <div class="aqi-status" [ngClass]="aqiStatus.class">{{ aqiStatus.label }}</div>
+        </div>
+
+        <!-- AQI Bar -->
+        <div class="aqi-bar-container">
+          <div class="aqi-bar">
+            <div class="aqi-gradient"></div>
+            <div class="aqi-indicator" [style.left.%]="aqiPercentage"></div>
+          </div>
+          <div class="aqi-scale">
+            <span>0</span>
+            <span>100</span>
+            <span>200</span>
+            <span>300</span>
+            <span>400</span>
+            <span>500</span>
+          </div>
+        </div>
+
+        <!-- Health Recommendations -->
+        <div class="health-recommendations">
+          <h3>{{ getCurrentStakeholderLabel() }} Recommendations</h3>
+          <p>{{ aqiStatus.recommendation }}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Activity Guidance Section -->
+    <div class="activity-section" *ngIf="currentLocation && currentActivityGuidance.activities">
+      <div class="activity-card">
+        <h2>Activity Guidance for {{ getCurrentStakeholderLabel() }}</h2>
+        <div class="activity-grid">
+          <div 
+            *ngFor="let activity of currentActivityGuidance.activities" 
+            class="activity-item"
+            [ngClass]="activity.status">
+            <div class="activity-header">
+              <span class="activity-icon">{{ activity.icon }}</span>
+              <h4>{{ activity.name }}</h4>
+              <span class="activity-status" [ngClass]="activity.status">
+                {{ activity.status === 'safe' ? '✅ Safe' : '⚠️ Not Recommended' }}
+              </span>
+            </div>
+            <p class="activity-recommendation">{{ activity.recommendation }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Historical Trends Section -->
+    <div class="trends-section" *ngIf="currentLocation">
+      <div class="trends-card">
+        <div class="trends-header">
+          <h2>Historical Air Quality Trends</h2>
+          <div class="time-period-selector">
+            <button 
+              *ngFor="let period of timePeriods" 
+              class="period-btn"
+              [class.active]="selectedPeriod === period.value"
+              (click)="selectTimePeriod(period.value)">
+              {{ period.label }}
+            </button>
+          </div>
+        </div>
+
+        <!-- Chart Container -->
+        <div class="chart-container">
+          <canvas 
+            baseChart
+            [data]="chartData"
+            [options]="chartOptions"
+            [type]="chartType">
+          </canvas>
+        </div>
+
+        <!-- AQI Info -->
+        <div class="aqi-info">
+          <p class="chart-description">Historical Air Quality Index (AQI) trends for {{ currentLocation }}</p>
+        </div>
+
+        <!-- Trend Insights -->
+        <div class="trend-insights">
+          <div class="insight-grid">
+            <div class="insight-card">
+              <div class="insight-label">Trend</div>
+              <div class="insight-value" [ngClass]="trendDirection">
+                {{ trendText }}
+                <span class="trend-icon">{{ trendIcon }}</span>
+              </div>
+            </div>
+            <div class="insight-card">
+              <div class="insight-label">Average AQI</div>
+              <div class="insight-value">{{ averageAQI }}</div>
+            </div>
+            <div class="insight-card">
+              <div class="insight-label">Best Day</div>
+              <div class="insight-value">{{ bestDay }}</div>
+            </div>
+            <div class="insight-card">
+              <div class="insight-label">Worst Day</div>
+              <div class="insight-value">{{ worstDay }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
