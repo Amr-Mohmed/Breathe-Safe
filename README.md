@@ -1,5 +1,5 @@
 #  Breathe-Safe
-<img src="Web.Client/public/who-image.png" alt="Description" width="1000"/>
+<img src="Web.Client/public/who-image.png" alt="Description" height="200"/>
 
 **2025 NASA Space Apps Challenge – From EarthData to Action: Cloud Computing with Earth Observation Data for Predicting Cleaner, Safer Skies**
 
