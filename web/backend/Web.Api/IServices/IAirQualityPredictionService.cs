@@ -1,4 +1,5 @@
 using web.Models;
+using web.Models.Dtos;
 
 namespace IService;
 
@@ -9,5 +10,6 @@ public interface IAirQualityPredictionService
     Task<List<AirQualityPrediction>> GetLastMonthAirQualityFor(string location);
 
     Task<AirQualityPrediction> AddAirQualityData(AirQualityPrediction airQualityPrediction);
+    Task<AirQualityPrediction> GetAirQualityPredictionsAsync(AirQualityRequest request);
 
 }

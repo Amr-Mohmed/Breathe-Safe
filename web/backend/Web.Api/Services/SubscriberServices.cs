@@ -27,7 +27,5 @@ public class SubscriberService : ISubscriberService
 
         //code to notify them
 
-    }
-
- 
+    } 
 }
