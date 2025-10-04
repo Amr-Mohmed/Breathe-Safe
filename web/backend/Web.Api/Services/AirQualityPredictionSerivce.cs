@@ -2,6 +2,7 @@ using System.Threading.Tasks;
 using IRepository.Generic;
 using IService;
 using web.Models;
+using web.Models.Dtos;
 using web.Models.enums;
 
 namespace Services;
@@ -10,6 +11,7 @@ public class AirQualityPredictionSerivce : IAirQualityPredictionService
 {
     private readonly IRepository<AirQualityPrediction> _repository;
     private readonly ISubscriberService _subscriberService;
+    private readonly HttpClient _httpClient = new();
 
     public AirQualityPredictionSerivce(IRepository<AirQualityPrediction> repository, ISubscriberService subscriberService)
     {
@@ -45,6 +47,20 @@ public class AirQualityPredictionSerivce : IAirQualityPredictionService
         var today = DateTime.Today;
         var lst = await _repository.RetrieveAllAsync(aqp => aqp.PredictionDate == today);
         return lst.ToList();
+    }
+
+    public async Task<AirQualityPrediction> GetAirQualityPredictionsAsync(AirQualityRequest request)
+    {
+        var response = await _httpClient.PostAsJsonAsync("FastApi.Url", request);
+        var result = await response.Content.ReadFromJsonAsync<PredictionResponse>();
+        return new AirQualityPrediction
+        {
+            PredictionDate = DateTime.UtcNow, 
+            AQI = (decimal)result.Prediction,   
+            SourceModel = "BreathSafe-Model",
+            AdvisoryMessage = $"Predicted AQI is {result.Prediction}, Be safe."
+        };
+
     }
 
     async Task GetAQICategory(decimal aqi)
