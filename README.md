@@ -1,6 +1,5 @@
 # Breathe-Safe
 2025 NASA Space Apps Challenge From EarthData to Action: Cloud Computing with Earth Observation Data for Predicting Cleaner, Safer Skies
-# Air Quality Forecasting Project
 
 ## Project Overview
 This project predicts air quality by leveraging multiple data sources and building a time-series prediction model. The workflow includes data collection, preprocessing, modeling, and deployment via an API.
@@ -28,6 +27,7 @@ All collected data was converted to **Excel format** for easier handling and pro
 - Users can request air quality forecasts by sending parameters to the API.
 
 ## Project Flow
+
 ```mermaid
 flowchart TD
     A[Data Collection] --> B[Data Conversion & Processing]
@@ -44,4 +44,5 @@ flowchart TD
         A --> A2
         A --> A3
     end
+
 ```
