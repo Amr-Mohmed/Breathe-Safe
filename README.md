@@ -6,7 +6,6 @@ This project predicts air quality by leveraging multiple data sources and buildi
 
 ## Data Sources
 The data was collected from three resources:
-
 1. **Real-time TEMPO** – Satellite-based measurements of air pollutants.  
 2. **Ground Data (OpenAQ API)** – Sensor-based measurements from multiple locations.  
 3. **Weather Data API** – Meteorological parameters influencing air quality.
@@ -20,7 +19,7 @@ All collected data was converted to **Excel format** for easier handling and pro
 
 ## Modeling
 - Implemented a **Time Series LSTM model** for air quality forecasting.  
-- The model was trained on historical data from the combined sources.  
+- The model was trained on historical data from the combined sources.
 
 ## API Deployment
 - Created a **FastAPI endpoint** to serve model predictions.  
@@ -28,6 +27,7 @@ All collected data was converted to **Excel format** for easier handling and pro
 
 ## Project Flow
 
+```mermaid
 flowchart TD
     subgraph DataSources["Data Collection"]
         A1[TEMPO Satellite<br/>Air Pollutants]
@@ -50,3 +50,4 @@ flowchart TD
     style D fill:#f3e5f5
     style E fill:#fce4ec
     style F fill:#fff9c4
+```
