@@ -1,59 +1,43 @@
-# WebClient
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.0.7.
+# Breathe Safe
 
-## Development server
+Breathe Safe is a modern, open-source web application for real-time air quality monitoring and public health awareness. It leverages NASA TEMPO satellite data, ground-based sensor networks, and weather integration to deliver actionable insights, stakeholder dashboards, and educational resources for individuals, schools, emergency services, and policymakers.
 
-To start a local development server, run:
+## 🌎 Key Features
+- **Real-time AQI monitoring** and historical air quality trends
+- **Stakeholder views:** General Public, Schools, Senior Care, Emergency Response
+- **Data sources:** NASA TEMPO, ground-based networks, weather data
+- **Past event storytelling:** Las Vegas wildfire impact
+- **Health tips & public awareness:** Actionable recommendations and resources
+- **Subscription system:** Get AQI alerts for your city
+- **Modern UI:** Responsive, glass-morphism design with custom SVG illustrations
 
-```bash
-ng serve
-```
+## 🚀 Tech Stack
+- Angular 19 (standalone components)
+- Chart.js / ng2-charts for interactive data visualization
+- TypeScript, HTML, CSS
+- Custom SVG assets and illustrations
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+## 🛠️ Getting Started
+1. **Clone the repository:**
+	```bash
+	git clone https://github.com/<your-org-or-username>/Breathe-Safe.git
+	```
+2. **Install dependencies:**
+	```bash
+	cd Web.Client
+	npm install
+	```
+3. **Run the development server:**
+	```bash
+	npm start
+	```
+4. **Open** [http://localhost:4200](http://localhost:4200) in your browser.
 
-## Code scaffolding
+## 📁 Frontend Project Structure
+- `src/app/` — Angular components and routes
+- `src/assets/images/` — Custom SVGs and images
+- `public/` — Favicon and static assets
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+## 🤝 Contributing
+Pull requests are welcome! For major changes, please open an issue first to discuss your ideas. 

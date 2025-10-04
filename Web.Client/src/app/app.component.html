@@ -1,4 +1,3 @@
-<!-- Navbar -->
 <nav class="navbar">
   <div class="nav-container">
     <div class="nav-logo">
@@ -19,16 +18,13 @@
   </div>
 </nav>
 
-<!-- Main Content -->
 <div class="main-content">
   <div class="container">
-    <!-- Header Section -->
     <div class="header-section">
       <h1 class="main-title">Air Quality Monitor</h1>
       <p class="subtitle">Get real-time air quality data powered by NASA TEMPO</p>
     </div>
 
-    <!-- Location Selection -->
     <div class="location-section">
       <div class="location-card">
         <h2>Choose Your Location</h2>
@@ -61,19 +57,16 @@
       </div>
     </div>
 
-    <!-- AQI Display -->
     <div class="aqi-section" *ngIf="currentLocation">
       <div class="aqi-card">
         <h2>Air Quality Index</h2>
         <div class="aqi-location">{{ currentLocation }}</div>
         
-        <!-- AQI Value Display -->
         <div class="aqi-value-container">
           <div class="aqi-number">{{ aqiValue }}</div>
           <div class="aqi-status" [ngClass]="aqiStatus.class">{{ aqiStatus.label }}</div>
         </div>
 
-        <!-- AQI Bar -->
         <div class="aqi-bar-container">
           <div class="aqi-bar">
             <div class="aqi-gradient"></div>
@@ -89,7 +82,6 @@
           </div>
         </div>
 
-        <!-- Health Recommendations -->
         <div class="health-recommendations">
           <h3>Health Recommendations</h3>
           <p>{{ aqiStatus.recommendation }}</p>
@@ -97,7 +89,6 @@
       </div>
     </div>
 
-    <!-- Historical Trends Section -->
     <div class="trends-section" *ngIf="currentLocation">
       <div class="trends-card">
         <div class="trends-header">
@@ -113,7 +104,6 @@
           </div>
         </div>
 
-        <!-- Chart Container -->
         <div class="chart-container">
           <canvas 
             baseChart
@@ -123,12 +113,10 @@
           </canvas>
         </div>
 
-        <!-- AQI Info -->
         <div class="aqi-info">
           <p class="chart-description">Historical Air Quality Index (AQI) trends for {{ currentLocation }}</p>
         </div>
 
-        <!-- Trend Insights -->
         <div class="trend-insights">
           <div class="insight-grid">
             <div class="insight-card">

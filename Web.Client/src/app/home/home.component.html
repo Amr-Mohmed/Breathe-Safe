@@ -1,0 +1,184 @@
+ 
+<div class="hero-section">
+  <div class="container">
+    <div class="hero-content">
+      <h1 class="hero-title">Advanced Air Quality Monitoring</h1>
+      <p class="hero-subtitle">Real-time air quality monitoring powered by NASA TEMPO</p>
+      <p class="hero-tagline">Protecting communities through advanced satellite technology and ground-based measurements</p>
+      
+ 
+      <div class="cta-section">
+  <a routerLink="/dashboard" [queryParams]="{stakeholder: 'general'}" class="primary-btn">
+          <svg class="btn-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z" fill="currentColor"/>
+          </svg>
+          Check Air Quality Now
+        </a>
+        <a routerLink="/data" class="secondary-btn">Learn About Our Data</a>
+      </div>
+      
+
+    </div>
+
+    <!-- Hero Image -->
+    <div class="hero-image">
+      <!-- Try multiple image paths to troubleshoot -->
+      <img src="assets/images/who-image.png" 
+           alt="Split view showing clean air with blue skies and green trees versus polluted air with smog, monitored by NASA TEMPO satellite"
+           class="hero-img"
+           onerror="
+             console.log('assets/images path failed, trying public folder');
+             this.src = 'who-image.png';
+             this.onerror = function() {
+               console.log('All image paths failed - check console and restart dev server');
+               this.style.display='none'; 
+               this.nextElementSibling.style.display='block';
+             }
+           "
+           onload="console.log('Image loaded successfully from:', this.src)">
+      <div class="image-fallback" style="display: none;">
+        <div class="fallback-content">
+          <h3>🛰️ NASA TEMPO Monitoring</h3>
+          <p>Clean Air vs Polluted Air Comparison</p>
+          <small>Image file: who-image.png<br>
+          Check browser console for loading errors<br>
+          Make sure dev server is restarted after adding assets</small>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- WHO Statistics Section -->
+<div class="statistics-section">
+  <div class="container">
+    <div class="stats-header">
+      <h2>The Global Air Quality Crisis</h2>
+      <div class="who-logo">
+        <span class="who-badge">World Health Organization</span>
+      </div>
+    </div>
+
+    <!-- WHO Quote -->
+    <div class="who-quote">
+      <blockquote>
+        "WHO data show that almost all of the global population ({{ whoStats.globalPopulationAffected }}%) breathe air that exceeds WHO guideline limits and contains high levels of pollutants, with {{ whoStats.countriesMostAffected }} suffering from the highest exposures."
+      </blockquote>
+      <cite>— World Health Organization, 2024</cite>
+    </div>
+
+    <!-- Statistics Grid -->
+    <div class="stats-grid">
+      <div class="stat-card critical">
+        <div class="stat-icon">💔</div>
+        <div class="stat-number">{{ formatNumber(whoStats.annualDeaths) }}</div>
+        <div class="stat-label">Annual deaths from air pollution</div>
+        <div class="stat-note">Equivalent to one death every 4.5 seconds</div>
+      </div>
+
+
+
+      <div class="stat-card impact">
+        <div class="stat-icon">🌍</div>
+        <div class="stat-number">{{ whoStats.globalPopulationAffected }}%</div>
+        <div class="stat-label">Of global population affected</div>
+        <div class="stat-note">Breathing air exceeding WHO guidelines</div>
+      </div>
+
+
+    </div>
+
+
+
+    <!-- Past Event Section -->
+    <div class="past-event">
+      <div class="event-image">
+        <div class="image-wrapper">
+          <img src="assets/images/las-vegas-event.svg" alt="Wildfire smoke plume drifting over Las Vegas skyline causing elevated AQI levels" />
+          <div class="image-overlay"></div>
+          <div class="badge-group">
+            <span class="badge badge-event">Past Event</span>
+            <span class="badge badge-wildfire">Wildfire Smoke</span>
+          </div>
+          <div class="peak-indicator">
+            Peak AQI 175
+          </div>
+        </div>
+      </div>
+      <div class="event-content">
+        <h3>Las Vegas Impacted by California Wildfire Smoke</h3>
+        <p class="lead">
+          A multi‑day California wildfire sent a dense high‑level smoke layer across Nevada. Within <strong>6 hours</strong>, Las Vegas AQI surged
+          from a stable <span class="aqi-chip moderate">Moderate 82</span> to an <span class="aqi-chip unhealthy">Unhealthy 175</span>, driven primarily by elevated <strong>PM2.5</strong> concentrations.
+        </p>
+        <div class="aqi-timeline" aria-label="AQI progression timeline">
+          <div class="segment good">
+            <span class="seg-line1">Morning</span>
+            <span class="seg-line2">55</span>
+          </div>
+          <div class="segment moderate">
+            <span class="seg-line1">Noon</span>
+            <span class="seg-line2">82</span>
+          </div>
+          <div class="segment unhealthy-sensitive">
+            <span class="seg-line1">Afternoon</span>
+            <span class="seg-line2">122</span>
+          </div>
+          <div class="segment unhealthy">
+            <span class="seg-line1">Peak</span>
+            <span class="seg-line2">175</span>
+          </div>
+          <div class="segment recovery">
+            <span class="seg-line1">Day 3</span>
+            <span class="seg-line2">95</span>
+          </div>
+        </div>
+        <ul class="event-facts">
+          <li><strong>Primary Pollutant:</strong> Fine particulate matter (PM2.5)</li>
+          <li><strong>Health Advisory:</strong> Limit outdoor exertion; sensitive groups stay indoors</li>
+          <li><strong>Mitigation:</strong> HEPA filtration + sealed indoor spaces reduced exposure by ~65%</li>
+          <li><strong>Return to Moderate:</strong> 72 hours after wind pattern shift</li>
+        </ul>
+        <div class="insight-box">
+          <p><strong>Insight:</strong> Rapid cross‑state transport of smoke highlights why <em>predictive AQI modeling</em> and
+          continuous satellite + ground fusion are critical for early public health messaging.</p>
+        </div>
+        <p class="event-note">Wildfire-driven PM2.5 events are increasing in frequency—historic baselines no longer predict current risk. Preparedness depends on early detection and scenario forecasting.</p>
+      </div>
+    </div>
+
+    <!-- Get Started Section -->
+    <div class="get-started">
+      <h3>Take Action Today</h3>
+      <div class="action-cards">
+        <div class="action-card">
+          <h4>🏠 Individuals & Families</h4>
+          <p>Monitor your local air quality and receive personalized health recommendations</p>
+          <a routerLink="/dashboard" [queryParams]="{stakeholder: 'general'}" class="action-btn">Open AQI Predection →</a>
+        </div>
+        
+        <div class="action-card">
+          <h4>🏫 Schools & Organizations</h4>
+          <p>Protect students and staff with real-time outdoor activity guidance</p>
+          <a routerLink="/dashboard" [queryParams]="{stakeholder: 'schools'}" class="action-btn">Schools AQI Predection →</a>
+        </div>
+        
+        <div class="action-card">
+          <h4>🚨 Emergency Services</h4>
+          <p>Access critical air quality data for emergency response planning</p>
+          <a routerLink="/dashboard" [queryParams]="{stakeholder: 'emergency'}" class="action-btn">Emergency AQI View →</a>
+        </div>
+
+
+
+        <div class="action-card">
+          <h4>🏛️ Government & Policy</h4>
+          <p>Make informed policy decisions with comprehensive air quality analytics</p>
+          <a routerLink="/dashboard" [queryParams]="{stakeholder: 'policy'}" class="action-btn">Policy AQI View →</a>
+        </div>
+
+
+      </div>
+    </div>
+  </div>
+</div>
