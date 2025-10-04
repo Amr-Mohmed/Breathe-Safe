@@ -1,6 +1,6 @@
 using System;
 
-namespace CleanAirApp.Models.enums
+namespace web.Models.enums
 {
     // Enum for categorizing subscribers
     public enum SubscriberType

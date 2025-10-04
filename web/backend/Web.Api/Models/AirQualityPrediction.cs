@@ -1,4 +1,4 @@
-namespace CleanAirApp.Models
+namespace web.Models
 {
     // Air quality prediction model result
     public class AirQualityPrediction
